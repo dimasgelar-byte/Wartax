@@ -70,7 +70,6 @@ export default function AksesPage() {
           </h1>
           <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-charcoal-mid">
             Makasih sudah daftar! Ini tools gratis yang bisa langsung kamu pakai.
-            Materi lengkap juga kami kirim ke WhatsApp kamu.
           </p>
         </header>
 
