@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 type FormState = "idle" | "submitting" | "success" | "error";
+
+// Marks that this browser has submitted the lead form, used to gate
+// /free-tools/akses so the tools list is only reachable after signup.
+export const LEAD_FLAG = "wartax_lead_submitted";
 
 // Auto-detect lead source from URL (?source=...) or the current path.
 function detectSource(): string {
@@ -16,6 +21,7 @@ function detectSource(): string {
 }
 
 export default function LeadForm() {
+  const router = useRouter();
   const [nama, setNama] = useState("");
   const [whatsapp, setWhatsapp] = useState("");
   const [email, setEmail] = useState("");
@@ -43,11 +49,14 @@ export default function LeadForm() {
         return;
       }
 
+      // Unlock the tools page, then redirect there.
       setState("success");
-      setMessage("Berhasil! Kami akan menghubungi kamu lewat WhatsApp.");
-      setNama("");
-      setWhatsapp("");
-      setEmail("");
+      try {
+        localStorage.setItem(LEAD_FLAG, "1");
+      } catch {
+        // localStorage may be unavailable (private mode) — redirect still works.
+      }
+      router.push("/free-tools/akses");
     } catch {
       setState("error");
       setMessage("Gagal terhubung ke server. Coba lagi.");
@@ -60,8 +69,16 @@ export default function LeadForm() {
         <p className="font-serif text-3xl text-rust" aria-hidden="true">
           ◆
         </p>
-        <h3 className="mt-4 text-xl font-bold text-charcoal">Makasih sudah daftar!</h3>
-        <p className="mt-2 text-sm text-charcoal-mid">{message}</p>
+        <h3 className="mt-4 text-xl font-bold text-charcoal">
+          Berhasil! Membuka tools-mu…
+        </h3>
+        <p className="mt-2 text-sm text-charcoal-mid">
+          Kalau tidak otomatis pindah,{" "}
+          <a href="/free-tools/akses" className="font-semibold text-rust underline">
+            klik di sini
+          </a>
+          .
+        </p>
       </div>
     );
   }

@@ -49,7 +49,7 @@ export default function CreatorPage() {
         </div>
 
         {/* 3. Kalkulator interaktif */}
-        <section className="mt-14">
+        <section id="kalkulator" className="mt-14 scroll-mt-24">
           <h2 className="text-2xl font-bold tracking-tight text-charcoal sm:text-3xl">
             Hitung dulu pajakmu
           </h2>

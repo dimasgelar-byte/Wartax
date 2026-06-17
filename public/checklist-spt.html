@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist Siapin SPT — WarTax</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,900;1,9..40,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rust:#C2401A; --rust-light:#E8927A; --rust-pale:#F5E6DF;
+  --charcoal:#1F1D1B; --charcoal-mid:#3D3A37;
+  --cream:#F5EFE4; --sand:#E8DCC8;
+  --wg:#8C8680; --wgp:#EDEAE6;
+  --ok:#3B6D11;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'DM Sans',system-ui,sans-serif;
+  background:var(--cream);
+  color:var(--charcoal);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:660px;margin:0 auto;padding:0 18px 64px}
+
+/* ---------- HEADER ---------- */
+.top{background:var(--charcoal);margin:0 -18px 0;padding:30px 18px 26px;text-align:center}
+.logo{font-family:'DM Serif Display',Georgia,serif;font-size:38px;letter-spacing:-.02em;line-height:1}
+.logo .w{color:var(--cream)}
+.logo .t{color:var(--rust-light);font-style:italic}
+.dots{display:flex;gap:6px;align-items:center;justify-content:center;margin-top:9px}
+.dot{border-radius:50%;background:var(--rust)}
+.dot:nth-child(1){width:6px;height:6px;opacity:.35}
+.dot:nth-child(2){width:9px;height:9px;opacity:.65}
+.dot:nth-child(3){width:12px;height:12px;opacity:1}
+
+/* ---------- HERO ---------- */
+.hero{padding:34px 4px 26px;text-align:center}
+.eyebrow{font-size:12px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);margin-bottom:14px}
+.hero h1{font-size:29px;font-weight:900;line-height:1.2;letter-spacing:-.01em;margin-bottom:14px}
+.hero p{font-size:15px;color:var(--charcoal-mid);max-width:480px;margin:0 auto}
+
+/* ---------- GATE CARD ---------- */
+.gate{background:#fff;border:1px solid rgba(31,29,27,.1);border-radius:18px;padding:26px 22px;margin-top:8px}
+.gate-h{font-size:18px;font-weight:700;margin-bottom:5px}
+.gate-sub{font-size:13.5px;color:var(--wg);margin-bottom:20px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--charcoal-mid);margin-bottom:6px}
+.field .opt{color:var(--wg);text-transform:none;letter-spacing:0;font-weight:400}
+.field input, .field select{
+  width:100%;font-family:inherit;font-size:15px;color:var(--charcoal);
+  background:var(--cream);border:1px solid rgba(31,29,27,.15);border-radius:10px;
+  padding:12px 13px;transition:border-color .15s,background .15s;
+}
+.field input:focus, .field select:focus{outline:none;border-color:var(--rust);background:#fff}
+.field .hint{font-size:11.5px;color:var(--wg);margin-top:5px;line-height:1.5}
+.cta{
+  width:100%;font-family:inherit;font-size:15px;font-weight:700;
+  background:var(--rust);color:#fff;border:none;border-radius:10px;
+  padding:14px;cursor:pointer;margin-top:6px;transition:opacity .15s,transform .1s;
+}
+.cta:hover{opacity:.92}
+.cta:active{transform:scale(.99)}
+.cta:disabled{background:var(--sand);color:var(--wg);cursor:not-allowed}
+.gate-note{font-size:11.5px;color:var(--wg);text-align:center;margin-top:14px;line-height:1.55}
+
+/* ---------- CHECKLIST ---------- */
+.checklist{display:none}
+.checklist.show{display:block;animation:fade .4s ease}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.wm{background:var(--rust-pale);border-radius:12px;padding:13px 16px;margin:6px 0 22px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.wm-l{font-size:13px;color:var(--charcoal)}
+.wm-l b{font-weight:700}
+.wm-prof{font-size:11px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--rust);background:#fff;padding:4px 10px;border-radius:20px}
+
+.prog-wrap{margin-bottom:26px}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.prog-label{font-size:12px;font-weight:500;letter-spacing:.04em;text-transform:uppercase;color:var(--charcoal-mid)}
+.prog-count{font-size:13px;font-weight:700;color:var(--rust)}
+.prog-bar{height:8px;background:var(--wgp);border-radius:20px;overflow:hidden}
+.prog-fill{height:100%;width:0;background:var(--rust);border-radius:20px;transition:width .4s ease}
+.prog-done{font-size:13px;color:var(--ok);font-weight:500;margin-top:9px;display:none}
+.prog-done.show{display:block}
+
+.sec-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--wg);margin:26px 0 10px}
+
+.item{background:#fff;border:1px solid rgba(31,29,27,.1);border-radius:14px;padding:16px 17px;margin-bottom:11px;transition:border-color .15s}
+.item.checked{border-color:rgba(59,109,17,.35);background:#fbfdf8}
+.item-top{display:flex;gap:13px;align-items:flex-start;cursor:pointer}
+.cb{flex-shrink:0;width:24px;height:24px;border:2px solid rgba(31,29,27,.22);border-radius:7px;margin-top:1px;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.cb svg{width:14px;height:14px;opacity:0;transform:scale(.5);transition:all .15s}
+.item.checked .cb{background:var(--ok);border-color:var(--ok)}
+.item.checked .cb svg{opacity:1;transform:scale(1)}
+.item-body{flex:1}
+.item-num{font-size:11px;font-weight:700;color:var(--rust);letter-spacing:.04em}
+.item-title{font-size:15.5px;font-weight:700;line-height:1.4;margin:2px 0 0}
+.item.checked .item-title{color:var(--wg)}
+.term{font-size:12.5px;color:var(--wg);font-style:italic;line-height:1.5;margin-top:6px;padding-left:11px;border-left:2px solid var(--sand)}
+.item-detail{font-size:13.5px;color:var(--charcoal-mid);line-height:1.6;margin-top:10px}
+.adaptive{font-size:13.5px;line-height:1.7;margin-top:11px;background:var(--cream);border-radius:9px;padding:12px 14px}
+.adaptive .ad-h{font-size:11px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--rust);margin-bottom:5px}
+.adaptive ul{list-style:none;margin:0}
+.adaptive li{padding-left:16px;position:relative;margin-bottom:3px}
+.adaptive li::before{content:"–";position:absolute;left:0;color:var(--wg)}
+.peek{font-size:13px;color:var(--charcoal-mid);line-height:1.6;margin-top:10px;background:var(--rust-pale);border-radius:9px;padding:11px 14px}
+.peek b{font-weight:700;color:var(--rust)}
+
+/* ---------- BRIDGE / CTA ---------- */
+.bridge{background:var(--charcoal);border-radius:18px;padding:28px 24px;margin-top:34px;text-align:center}
+.bridge h2{color:var(--cream);font-size:21px;font-weight:900;line-height:1.3;margin-bottom:12px}
+.bridge p{color:#C0BAB2;font-size:14px;line-height:1.65;max-width:440px;margin:0 auto 20px}
+.bridge .bcta{display:inline-block;background:var(--rust);color:#fff;font-size:14.5px;font-weight:700;text-decoration:none;padding:13px 26px;border-radius:10px;transition:opacity .15s}
+.bridge .bcta:hover{opacity:.92}
+.bridge .bnote{display:block;color:var(--wg);font-size:11.5px;margin-top:14px}
+
+.disclaim{font-size:11.5px;color:var(--wg);line-height:1.6;text-align:center;margin-top:26px;padding:0 8px}
+
+.foot{text-align:center;margin-top:30px;padding-top:22px;border-top:1px solid rgba(31,29,27,.1)}
+.foot .flogo{font-family:'DM Serif Display',Georgia,serif;font-size:19px}
+.foot .flogo .w{color:var(--charcoal)}
+.foot .flogo .t{color:var(--rust);font-style:italic}
+.foot .furl{font-size:12px;color:var(--wg);margin-top:3px;letter-spacing:.03em}
+
+@media(max-width:480px){
+  .hero h1{font-size:24px}
+  .logo{font-size:32px}
+  .gate{padding:22px 18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="logo"><span class="w">War</span><span class="t">Tax</span></div>
+    <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+  </div>
+
+  <div class="hero">
+    <div class="eyebrow">Checklist Gratis</div>
+    <h1>Siapkan ini sebelum lapor SPT.</h1>
+    <p>Enam hal yang harus beres sebelum kamu buka Coretax. Isi nama dan pilih pekerjaanmu — checklist menyesuaikan jenis penghasilanmu.</p>
+  </div>
+
+  <!-- GATE -->
+  <div class="gate" id="gate">
+    <div class="gate-h">Checklist ini untuk siapa?</div>
+    <div class="gate-sub">Isinya menyesuaikan jenis penghasilanmu.</div>
+
+    <div class="field">
+      <label for="nm">Nama</label>
+      <input type="text" id="nm" placeholder="nama panggilan juga boleh" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="id">NIK / NPWP <span class="opt">— opsional</span></label>
+      <input type="text" id="id" placeholder="tampil sebagai penanda di checklist-mu" autocomplete="off" inputmode="numeric">
+      <div class="hint">Tersimpan hanya di browser ini, tidak dikirim ke mana pun. Boleh dikosongkan.</div>
+    </div>
+
+    <div class="field">
+      <label for="prof">Pekerjaanmu paling dekat ke mana?</label>
+      <select id="prof">
+        <option value="">— pilih satu —</option>
+        <option value="creator">Content creator / influencer</option>
+        <option value="dokter">Dokter / tenaga medis</option>
+        <option value="freelancer">Freelancer (desainer, developer, penulis, konsultan)</option>
+        <option value="umum">Pekerjaan bebas lainnya</option>
+      </select>
+    </div>
+
+    <button class="cta" id="startBtn" disabled>Buka checklist</button>
+    <div class="gate-note">Data tersimpan di browser ini, bukan di server. Tutup halaman, isianmu tetap ada di perangkatmu.</div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="checklist" id="list">
+
+    <div class="wm">
+      <div class="wm-l">Disiapkan untuk <b id="wmName">—</b><span id="wmId"></span></div>      <div class="wm-prof" id="wmProf">—</div>
+    </div>
+
+    <div class="prog-wrap">
+      <div class="prog-top">
+        <span class="prog-label">Progress kamu</span>
+        <span class="prog-count"><span id="cDone">0</span> / 6 beres</span>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="cFill"></div></div>
+      <div class="prog-done" id="cAllDone">Enam poin beres. Kamu siap masuk ke tahap pengisian SPT.</div>
+    </div>
+
+    <div class="sec-label">Yang harus kamu siapkan</div>
+    <div id="quickWins"></div>
+
+    <div class="sec-label">Yang harus kamu pahami sebelum mulai</div>
+    <div id="awareness"></div>
+
+    <div class="bridge">
+      <h2 id="bridgeH">Persiapan beres. Berikutnya: pengisian.</h2>
+      <p id="bridgeP">Memilih cara hitung yang tepat, mengisi Form 1770 di Coretax langkah demi langkah, dan memastikan angkanya benar — itu yang dipandu di WarTax SPT Kit, sampai kamu ngerti.</p>
+      <a href="#" class="bcta" id="bridgeBtn">Lihat WarTax SPT Kit</a>
+      <span class="bnote">Sedang disiapkan. Kamu yang sudah ambil checklist ini dikabari pertama.</span>
+    </div>
+
+    <div class="disclaim">
+      Checklist ini alat bantu untuk menyiapkan diri, bukan pengganti konsultasi pajak. Untuk kasus yang rumit atau ragu, ada baiknya cek dengan praktisi pajak. Angka dan ketentuan pajak bisa berubah — pastikan kamu pakai info terbaru dari sumber resmi DJP saat melapor.
+    </div>
+
+    <div class="foot">
+      <div class="flogo"><span class="w">War</span><span class="t">Tax</span></div>
+      <div class="furl">wartax.id</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+// ---------- DATA: 6 poin, poin 1-2 adaptif per profil ----------
+var PROFILE_LABEL = {
+  creator: "Content Creator",
+  dokter: "Dokter / Tenaga Medis",
+  freelancer: "Freelancer",
+  umum: "Pekerjaan Bebas"
+};
+
+var ADAPTIVE = {
+  creator: {
+    dipotong: ["Brand deal / endorse lewat agency atau MCN", "Fee dari platform lokal yang udah motong pajak", "Job dari brand yang minta NPWP & kasih bukti potong"],
+    utuh: ["AdSense / YouTube / fee platform luar negeri", "Endorse yang dibayar transfer langsung tanpa potongan", "Affiliate, tip/gift dari live, hasil jualan sendiri"]
+  },
+  dokter: {
+    dipotong: ["Jasa medis dari RS / klinik (biasanya dipotong duluan)", "Honor dari faskes tempat kamu terikat", "Fee dari institusi yang kasih bukti potong"],
+    utuh: ["Penghasilan dari praktik mandiri", "Honor jadi pembicara seminar / webinar", "Telemedicine atau konsultasi pribadi langsung ke pasien"]
+  },
+  freelancer: {
+    dipotong: ["Fee dari perusahaan/klien yang motong pajak duluan", "Project lewat agency yang kasih bukti potong", "Job dari klien yang minta NPWP-mu"],
+    utuh: ["Project dari klien individu tanpa potongan", "Penghasilan dari platform/marketplace luar negeri", "Hasil jualan produk/jasa digital sendiri"]
+  },
+  umum: {
+    dipotong: ["Honor / fee yang udah ada potongan pajaknya", "Penghasilan dari instansi/perusahaan yang kasih bukti potong", "Bayaran dari pihak yang minta NPWP-mu"],
+    utuh: ["Honor / fee yang kamu terima utuh tanpa potongan", "Penghasilan dari klien individu langsung", "Hasil usaha atau jasa yang kamu kelola sendiri"]
+  }
+};
+
+var QUICK = [
+  {
+    n: "01",
+    title: "Kumpulkan semua bukti potong dari tiap pemberi penghasilan",
+    term: "Bukti Potong \u2014 surat yang menyatakan pajakmu sudah dipotong oleh pihak yang membayarmu (termasuk 1721-A1 dan bukti potong PPh).",
+    detail: "Kumpulkan dari <b>semua</b> sumber, bukan hanya yang terbesar. Yang dari tempat kecil atau yang sekali-dua kali justru paling sering terlewat.",
+    adaptiveKey: "dipotong",
+    adaptiveHead: "Untuk profilmu, ini biasanya dari:"
+  },
+  {
+    n: "02",
+    title: "Catat penghasilan yang kamu terima utuh (belum dipotong pajak)",
+    term: null,
+    detail: "Penghasilan tanpa potongan tetap wajib dilaporkan. Ini bagian yang paling sering terlewat \u2014 catat semuanya sekarang, sebelum lupa.",
+    adaptiveKey: "utuh",
+    adaptiveHead: "Untuk profilmu, ini biasanya berupa:"
+  },
+  {
+    n: "03",
+    title: "Cek kunci-kunci masuk Coretax kamu",
+    term: "Coretax \u2014 sistem pajak online DJP, tempat lapor SPT sejak 2026.",
+    detail: "Empat hal ini sering baru ketahuan kurang saat mau submit. Cek semuanya dari sekarang:",
+    creds: [
+      ["NIK / NPWP 16 digit", "username untuk masuk"],
+      ["Password", "untuk login ke akun"],
+      ["Passphrase", "berbeda dari password \u2014 ini tanda tangan digitalmu saat mengesahkan SPT"],
+      ["Kode Otorisasi / Sertifikat Digital", "izin terpisah agar kamu bisa menandatangani dokumen. Sering belum dibuat, padahal wajib ada sebelum lapor"]
+    ],
+    credNote: "Belum punya salah satunya? Pengurusannya butuh waktu \u2014 tidak bisa dadakan.",
+    adaptiveKey: null
+  },
+  {
+    n: "04",
+    title: "Hitung kasar total penghasilanmu setahun",
+    term: null,
+    detail: "Belum perlu hitung pajaknya. Jumlahkan semua penghasilan setahun dari seluruh sumber, supaya kamu punya gambaran angka sebelum mengisi SPT.",
+    adaptiveKey: null
+  }
+];
+
+var AWARENESS = [
+  {
+    n: "05",
+    title: "Pastikan kamu memakai Form 1770",
+    term: "Form 1770 \u2014 formulir SPT untuk penghasilan dari pekerjaan bebas atau usaha. Berbeda dari 1770 S dan 1770 SS yang untuk karyawan.",
+    detail: "Penghasilan dari pekerjaan bebas memakai Form 1770. Salah pilih formulir adalah kesalahan yang umum \u2014 pastikan sesuai kondisimu.",
+    peek: null
+  },
+  {
+    n: "06",
+    title: "Pahami: ada dua cara hitung pajak, dan pilihannya berdampak",
+    term: "NPPN \u2014 hitung pakai persentase patokan dari pemerintah, tanpa perlu catatan setahun penuh. Pembukuan \u2014 hitung dari catatan untung-rugi yang sebenarnya.",
+    detail: "Keduanya legal dan kamu boleh memilih. Pilihan ini bisa membuat angka pajakmu berbeda \u2014 jadi bukan keputusan yang asal pilih.",
+    peek: "Cara memilih yang paling tepat untuk kondisimu dibahas tuntas di SPT Kit. Di tahap ini, cukup pahami bahwa pilihan ini ada dan berdampak."
+  }
+];
+
+// ---------- STATE ----------
+var KEY = "wartax_checklist_v1";
+var state = { name:"", id:"", prof:"", done:{} };
+
+function load(){
+  try{
+    var raw = localStorage.getItem(KEY);
+    if(raw){ state = Object.assign(state, JSON.parse(raw)); }
+  }catch(e){}
+}
+function save(){
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+}
+
+// ---------- GATE LOGIC ----------
+var nmEl = document.getElementById("nm");
+var idEl = document.getElementById("id");
+var profEl = document.getElementById("prof");
+var startBtn = document.getElementById("startBtn");
+
+function checkGate(){
+  startBtn.disabled = !(nmEl.value.trim() && profEl.value);
+}
+nmEl.addEventListener("input", checkGate);
+profEl.addEventListener("change", checkGate);
+
+startBtn.addEventListener("click", function(){
+  state.name = nmEl.value.trim();
+  state.id = idEl.value.trim();
+  state.prof = profEl.value;
+  save();
+  renderChecklist();
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("list").classList.add("show");
+  document.getElementById("list").scrollIntoView({behavior:"smooth", block:"start"});
+});
+
+// ---------- RENDER ----------
+function escapeHtml(s){ return s.replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]; }); }
+
+function itemHTML(it, isAware){
+  var checked = state.done[it.n] ? " checked" : "";
+  var html = '<div class="item'+checked+'" id="it-'+it.n+'">';
+  html += '<div class="item-top" onclick="toggle(\''+it.n+'\')">';
+  html += '<div class="cb"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5L20 6" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>';
+  html += '<div class="item-body">';
+  html += '<span class="item-num">POIN '+it.n+'</span>';
+  html += '<p class="item-title">'+it.title+'</p>';
+  if(it.term){ html += '<div class="term">'+it.term+'</div>'; }
+  html += '<div class="item-detail">'+it.detail+'</div>';
+  if(it.creds){
+    html += '<div class="adaptive"><ul>';
+    for(var c=0;c<it.creds.length;c++){
+      html += '<li><b>'+it.creds[c][0]+'</b> \u2014 '+it.creds[c][1]+'</li>';
+    }
+    html += '</ul></div>';
+    if(it.credNote){ html += '<div class="item-detail" style="margin-top:9px">'+it.credNote+'</div>'; }
+  }
+  if(it.adaptiveKey){
+    var ad = ADAPTIVE[state.prof][it.adaptiveKey];
+    html += '<div class="adaptive"><div class="ad-h">'+it.adaptiveHead+'</div><ul>';
+    for(var i=0;i<ad.length;i++){ html += '<li>'+ad[i]+'</li>'; }
+    html += '</ul></div>';
+  }
+  if(isAware && it.peek){ html += '<div class="peek">'+it.peek+'</div>'; }
+  html += '</div></div></div>';
+  return html;
+}
+
+function renderChecklist(){
+  // watermark
+  document.getElementById("wmName").textContent = state.name;
+  document.getElementById("wmId").innerHTML = state.id ? ' <span style="color:var(--wg)">\u00B7 '+escapeHtml(state.id)+'</span>' : '';
+  document.getElementById("wmProf").textContent = PROFILE_LABEL[state.prof] || "";
+
+  // items
+  var q = "";
+  for(var i=0;i<QUICK.length;i++){ q += itemHTML(QUICK[i], false); }
+  document.getElementById("quickWins").innerHTML = q;
+
+  var a = "";
+  for(var j=0;j<AWARENESS.length;j++){ a += itemHTML(AWARENESS[j], true); }
+  document.getElementById("awareness").innerHTML = a;
+
+  updateProgress();
+}
+
+function toggle(n){
+  state.done[n] = !state.done[n];
+  save();
+  var el = document.getElementById("it-"+n);
+  if(el){ el.classList.toggle("checked", !!state.done[n]); }
+  updateProgress();
+}
+
+function updateProgress(){
+  var total = 6, done = 0;
+  for(var k in state.done){ if(state.done[k]) done++; }
+  // total poin sebenarnya 6 (01-06)
+  document.getElementById("cDone").textContent = done;
+  document.querySelector(".prog-count").innerHTML = '<span id="cDone">'+done+'</span> / 6 beres';
+  document.getElementById("cFill").style.width = (done/6*100)+"%";
+  document.getElementById("cAllDone").classList.toggle("show", done===6);
+}
+
+// ---------- INIT ----------
+load();
+if(state.name && state.prof){
+  // returning user — restore filled gate then auto-open
+  nmEl.value = state.name;
+  idEl.value = state.id || "";
+  profEl.value = state.prof;
+  checkGate();
+  renderChecklist();
+  document.getElementById("gate").style.display = "none";
+  document.getElementById("list").classList.add("show");
+}
+</script>
+</body>
+</html>
