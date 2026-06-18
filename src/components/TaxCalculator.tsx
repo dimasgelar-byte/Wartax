@@ -45,7 +45,7 @@ export default function TaxCalculator() {
   const bruto = Number(brutoRaw) || 0;
 
   const calc = useMemo(() => {
-    const neto = bruto * 0.5; // NPPN content creator 50%
+    const neto = bruto * 0.5; // NPPN pekerja bebas 50% (asumsi umum)
     const ptkp = PTKP[status].value;
     const pkp = Math.max(neto - ptkp, 0);
     const pph = progressivePph(pkp);

@@ -31,7 +31,7 @@ const TOOLS = [
   },
   {
     title: "Hitung dulu pajakmu",
-    desc: "Kalkulator PPh untuk content creator (PP 20/2026). Masukkan penghasilan, langsung lihat estimasi pajak setahun.",
+    desc: "Kalkulator PPh untuk pekerja bebas. Masukkan penghasilan, langsung lihat estimasi pajak setahun.",
     href: "/solusi/creator#kalkulator",
     cta: "Buka kalkulator →",
     external: false,

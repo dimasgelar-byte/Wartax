@@ -3,20 +3,20 @@ import type { Metadata } from "next";
 import TaxCalculator from "@/components/TaxCalculator";
 
 export const metadata: Metadata = {
-  title: "Panduan Pajak Content Creator — WarTax",
+  title: "Panduan Pajak Pekerja Bebas — WarTax",
   description:
-    "Kalkulator + panduan lengkap pajak content creator sesuai PP 20/2026. Dari hitung sampai siap lapor, pakai bahasa manusia.",
+    "Kalkulator + panduan lengkap pajak untuk pekerja bebas. Dari hitung sampai siap lapor, pakai bahasa manusia.",
 };
 
 // Placeholder — ganti setelah Lynk.id & nomor WA live.
 const LYNK_URL = "https://lynk.id/wartax/4xom05gnn08m";
 const WA_URL =
-  "https://wa.me/6285121520615?text=Halo%20WarTax%2C%20saya%20mau%20tanya%20soal%20Panduan%20Pajak%20Content%20Creator";
+  "https://wa.me/6285121520615?text=Halo%20WarTax%2C%20saya%20mau%20tanya%20soal%20Panduan%20Pajak%20Pekerja%20Bebas";
 
 const INCLUDES = [
-  "Kalkulator PPh khusus content creator (PP 20/2026)",
-  "Penjelasan aturan baru dengan bahasa sehari-hari",
-  "Langkah hitung penghasilan dari banyak platform & endorse",
+  "Kalkulator PPh untuk pekerja bebas",
+  "Penjelasan aturan pajak dengan bahasa sehari-hari",
+  "Langkah hitung penghasilan dari banyak klien & sumber",
   "Checklist dokumen sebelum lapor",
   "Panduan input di Coretax, langkah demi langkah",
 ];
@@ -39,12 +39,12 @@ export default function CreatorPage() {
             Baru
           </span>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-charcoal sm:text-5xl">
-            Panduan Pajak Content Creator
+            Panduan Pajak Pekerja Bebas
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-charcoal-mid">
-            Khusus content creator yang kena aturan baru PP 20/2026. Kalkulator
-            + panduan lengkap dari hitung sampai siap lapor. Pakai bahasa
-            manusia.
+            Buat kamu yang penghasilannya dari keahlian sendiri — freelancer,
+            profesional, dan pekerja lepas. Kalkulator + panduan lengkap dari
+            hitung sampai siap lapor. Pakai bahasa manusia.
           </p>
         </div>
 

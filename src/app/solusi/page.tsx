@@ -49,12 +49,12 @@ export default function SolusiPage() {
               Baru
             </span>
             <h3 className="mt-4 text-xl font-bold text-charcoal">
-              Panduan Pajak Content Creator
+              Panduan Pajak Pekerja Bebas
             </h3>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-charcoal-mid">
-              Khusus content creator yang kena aturan baru PP 20/2026.
-              Kalkulator + panduan lengkap dari hitung sampai siap lapor. Pakai
-              bahasa manusia.
+              Buat kamu yang penghasilannya dari keahlian sendiri. Kalkulator +
+              panduan lengkap dari hitung sampai siap lapor. Pakai bahasa
+              manusia.
             </p>
             <div className="mt-6 flex items-end justify-between">
               <div>
