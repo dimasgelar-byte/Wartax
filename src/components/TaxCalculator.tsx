@@ -167,8 +167,9 @@ export default function TaxCalculator() {
 
       {/* Disclaimer */}
       <p className="mt-5 text-xs leading-relaxed text-warm-gray">
-        Estimasi kasar · NPPN 50% · belum termasuk bukti potong dari klien ·
-        alat bantu, bukan pengganti konsultan pajak
+        Estimasi kasar · pakai asumsi NPPN 50% (norma bisa beda per profesi) ·
+        belum termasuk bukti potong dari klien · alat bantu, bukan pengganti
+        konsultan pajak
       </p>
     </div>
   );
